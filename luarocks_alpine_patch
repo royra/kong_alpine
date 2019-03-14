@@ -1,0 +1,22 @@
+diff --git a/src/luarocks/core/sysdetect.lua b/src/luarocks/core/sysdetect.lua
+index bd5139b..19cbf67 100644
+--- a/src/luarocks/core/sysdetect.lua
++++ b/src/luarocks/core/sysdetect.lua
+@@ -181,7 +181,16 @@ local function detect_elf_system(fd, hdr, sections)
+          end
+       end
+    end
+-
++
++   local procfile = io.open("/proc/sys/kernel/ostype")
++   if procfile then
++      local version = procfile:read(6)
++      procfile:close()
++      if version == "Linux\n" then
++         return "linux"
++      end
++   end
++
+    return system
+ end
+
